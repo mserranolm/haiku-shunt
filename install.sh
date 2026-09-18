@@ -48,8 +48,7 @@ esac
 
 echo ""
 echo "Done. Next:"
-echo "  export ANTHROPIC_API_KEY=sk-..."
-echo "  haiku-shunt doctor"
+echo "  haiku-shunt doctor     # uses your Claude Code login; export ANTHROPIC_API_KEY only to force the API"
 echo ""
 echo "Claude Code (marketplace plugin):"
 echo "  claude plugin marketplace add mserranolm/haiku-shunt"

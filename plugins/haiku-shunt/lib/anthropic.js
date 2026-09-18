@@ -1,5 +1,6 @@
 import { readFileSync, existsSync, statSync } from "node:fs";
 import { resolve } from "node:path";
+import { callClaudeCli } from "./claude-cli.js";
 
 export const DEFAULT_MODEL = "claude-haiku-4-5";
 export const DEFAULT_MIN_LINES = 350;
@@ -17,8 +18,10 @@ export function getConfig() {
     process.env.HAIKU_SHUNT_TIMEOUT_MS || "",
     10,
   );
+  const apiKey = process.env.ANTHROPIC_API_KEY || "";
   return {
-    apiKey: process.env.ANTHROPIC_API_KEY || "",
+    apiKey,
+    backend: resolveBackend(process.env.HAIKU_SHUNT_BACKEND, apiKey),
     model: process.env.HAIKU_SHUNT_MODEL || DEFAULT_MODEL,
     minLines:
       Number.isFinite(minLines) && minLines > 0 ? minLines : DEFAULT_MIN_LINES,
@@ -29,6 +32,22 @@ export function getConfig() {
     apiUrl:
       process.env.ANTHROPIC_API_URL || "https://api.anthropic.com/v1/messages",
   };
+}
+
+/**
+ * Which backend answers: "api" (Messages API, needs ANTHROPIC_API_KEY) or
+ * "claude" (`claude -p`, uses the Claude Code login). Explicit env wins;
+ * otherwise the API when a key is present, else the Claude Code CLI.
+ */
+export function resolveBackend(requested, apiKey) {
+  const r = (requested || "").trim().toLowerCase();
+  if (r === "api" || r === "claude") return r;
+  if (r) {
+    throw new Error(
+      `HAIKU_SHUNT_BACKEND must be "api" or "claude", got "${requested}"`,
+    );
+  }
+  return apiKey ? "api" : "claude";
 }
 
 export function countLines(filePath) {
@@ -60,17 +79,20 @@ export function stripMarkdownFences(text) {
 }
 
 /**
- * Call Anthropic Messages API. Returns { text, usage }.
+ * Call Haiku through the configured backend. Returns { text, usage, model }.
  */
 export async function callHaiku({
   system,
   user,
   maxTokens = DEFAULT_MAX_TOKENS_READ,
 }) {
-  const { apiKey, model, timeoutMs, apiUrl } = getConfig();
+  const { apiKey, backend, model, timeoutMs, apiUrl } = getConfig();
+  if (backend === "claude") {
+    return callClaudeCli({ system, user, model, timeoutMs });
+  }
   if (!apiKey) {
     throw new Error(
-      "ANTHROPIC_API_KEY is not set. Export your Anthropic API key and retry.",
+      "ANTHROPIC_API_KEY is not set. Export it, or unset HAIKU_SHUNT_BACKEND to use the Claude Code login.",
     );
   }
 
