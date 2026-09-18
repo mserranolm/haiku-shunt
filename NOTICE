@@ -1,0 +1,12 @@
+haiku-shunt
+Copyright 2026 mserranolm
+
+This project is inspired by the architecture described in Spotify Engineering's
+post "Portal by Spotify cut my Claude Code token usage by 90%" and the Apache-2.0
+licensed shunt plugin in https://github.com/spotify/portal-ai-plugins.
+
+haiku-shunt is an independent clean-room reimplementation that replaces Spotify
+Portal / AiKA modes with the Anthropic Claude Haiku API. It does not redistribute
+Spotify Portal CLI code.
+
+Spotify and Portal are trademarks of their respective owners.

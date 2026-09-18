@@ -1,0 +1,23 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "haiku-shunt",
+  "version": "0.1.0",
+  "description": "Shunt I/O-heavy agent work to Claude Haiku to save frontier-model tokens.",
+  "owner": {
+    "name": "mserranolm"
+  },
+  "plugins": [
+    {
+      "name": "haiku-shunt",
+      "description": "Hooks block large file reads and redirect to bulk-reader/code-writer scripts backed by Claude Haiku.",
+      "version": "0.1.0",
+      "author": {
+        "name": "mserranolm"
+      },
+      "homepage": "https://github.com/mserranolm/haiku-shunt",
+      "repository": "https://github.com/mserranolm/haiku-shunt",
+      "source": "./plugins/haiku-shunt",
+      "category": "developer-tools"
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "name": "haiku-shunt",
+  "version": "0.1.0",
+  "description": "Shunt I/O-heavy agent work to Claude Haiku — save frontier-model tokens in Claude Code and Cursor",
+  "type": "module",
+  "bin": {
+    "haiku-shunt": "./plugins/haiku-shunt/bin/haiku-shunt.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "test": "node evals/run.mjs",
+    "doctor": "node bin/haiku-shunt.js doctor"
+  },
+  "files": [
+    "plugins",
+    "bin",
+    "cursor",
+    "install.sh",
+    "NOTICE",
+    "LICENSE",
+    "README.md"
+  ],
+  "keywords": [
+    "claude-code",
+    "cursor",
+    "hooks",
+    "tokens",
+    "haiku",
+    "anthropic"
+  ],
+  "author": "mserranolm",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mserranolm/haiku-shunt.git"
+  },
+  "homepage": "https://github.com/mserranolm/haiku-shunt",
+  "bugs": {
+    "url": "https://github.com/mserranolm/haiku-shunt/issues"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "name": "haiku-shunt",
+  "version": "0.1.0",
+  "description": "Shunt I/O-heavy agent work to Claude Haiku — hooks block large reads; skills delegate bulk-read and code-write.",
+  "author": {
+    "name": "mserranolm"
+  },
+  "homepage": "https://github.com/mserranolm/haiku-shunt",
+  "repository": "https://github.com/mserranolm/haiku-shunt",
+  "license": "Apache-2.0",
+  "keywords": ["tokens", "hooks", "haiku", "claude", "delegation"],
+  "skills": "./skills",
+  "hooks": "./hooks/cursor-hooks.json",
+  "commands": "./commands",
+  "variables": {
+    "type": "object",
+    "properties": {
+      "ANTHROPIC_API_KEY": {
+        "type": "string",
+        "title": "Anthropic API key",
+        "description": "Required for bulk-read / code-write (Claude Haiku worker). Prefer exporting ANTHROPIC_API_KEY in your shell."
+      }
+    }
+  }
+}

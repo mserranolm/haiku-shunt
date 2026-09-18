@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "hooks": {
+    "preToolUse": [
+      {
+        "command": "./hooks/haiku-shunt-hook.js",
+        "matcher": "Read",
+        "timeout": 10
+      },
+      {
+        "command": "./hooks/haiku-shunt-hook.js",
+        "matcher": "Shell",
+        "timeout": 10
+      }
+    ],
+    "beforeReadFile": [
+      {
+        "command": "./hooks/haiku-shunt-hook.js",
+        "matcher": "Read",
+        "timeout": 10
+      }
+    ],
+    "beforeShellExecution": [
+      {
+        "command": "./hooks/haiku-shunt-hook.js",
+        "timeout": 10
+      }
+    ]
+  }
+}

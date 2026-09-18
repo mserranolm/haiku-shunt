@@ -1,0 +1,1 @@
+../plugins/haiku-shunt/bin/haiku-shunt-hook.js

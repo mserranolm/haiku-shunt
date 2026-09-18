@@ -1,0 +1,27 @@
+{
+  "description": "Block large file reads and redirect to haiku-shunt bulk-reader",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Read",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node ${CLAUDE_PLUGIN_ROOT}/bin/haiku-shunt-hook.js",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node ${CLAUDE_PLUGIN_ROOT}/bin/haiku-shunt-hook.js",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}

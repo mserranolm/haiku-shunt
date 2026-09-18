@@ -1,0 +1,11 @@
+{
+  "name": "haiku-shunt",
+  "version": "0.1.0",
+  "description": "Shunt I/O-heavy work to Claude Haiku. Hooks block large reads; skills + CLI delegate bulk-read and code-write.",
+  "author": {
+    "name": "mserranolm"
+  },
+  "homepage": "https://github.com/mserranolm/haiku-shunt",
+  "repository": "https://github.com/mserranolm/haiku-shunt",
+  "keywords": ["tokens", "hooks", "haiku", "delegation"]
+}

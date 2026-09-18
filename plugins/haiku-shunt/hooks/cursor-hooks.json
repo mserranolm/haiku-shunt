@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "hooks": {
+    "preToolUse": [
+      {
+        "command": "node ${CURSOR_PLUGIN_ROOT}/bin/haiku-shunt-hook.js",
+        "matcher": "Read",
+        "timeout": 10
+      },
+      {
+        "command": "node ${CURSOR_PLUGIN_ROOT}/bin/haiku-shunt-hook.js",
+        "matcher": "Shell",
+        "timeout": 10
+      }
+    ],
+    "beforeReadFile": [
+      {
+        "command": "node ${CURSOR_PLUGIN_ROOT}/bin/haiku-shunt-hook.js",
+        "matcher": "Read",
+        "timeout": 10
+      }
+    ],
+    "beforeShellExecution": [
+      {
+        "command": "node ${CURSOR_PLUGIN_ROOT}/bin/haiku-shunt-hook.js",
+        "timeout": 10
+      }
+    ]
+  }
+}

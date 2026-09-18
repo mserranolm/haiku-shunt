@@ -1,0 +1,26 @@
+{
+  "name": "haiku-shunt",
+  "owner": {
+    "name": "mserranolm"
+  },
+  "metadata": {
+    "description": "Shunt I/O-heavy agent work to Claude Haiku to save frontier-model tokens.",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "haiku-shunt",
+      "source": "plugins/haiku-shunt",
+      "description": "Hooks block large file reads and redirect to Haiku-backed bulk-reader / code-writer.",
+      "version": "0.1.0",
+      "author": {
+        "name": "mserranolm"
+      },
+      "homepage": "https://github.com/mserranolm/haiku-shunt",
+      "repository": "https://github.com/mserranolm/haiku-shunt",
+      "license": "Apache-2.0",
+      "keywords": ["tokens", "hooks", "haiku", "delegation"],
+      "category": "developer-tools"
+    }
+  ]
+}
