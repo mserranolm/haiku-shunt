@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import { writeFileSync, mkdirSync } from "node:fs";
 import { dirname, resolve } from "node:path";
-import { bulkRead, codeWrite } from "../lib/anthropic.js";
+import { bulkRead, codeWrite, getConfig } from "../lib/anthropic.js";
 import { runInstall, runDoctor } from "../lib/install.js";
 
 function printHelp() {
@@ -26,7 +26,9 @@ Usage:
   haiku-shunt help
 
 Environment:
-  ANTHROPIC_API_KEY          required for bulk-read / code-write
+  HAIKU_SHUNT_BACKEND        api | claude (default: api if ANTHROPIC_API_KEY is set, else claude)
+  ANTHROPIC_API_KEY          required only for the api backend
+  HAIKU_SHUNT_CLAUDE_BIN     default: claude (claude backend)
   HAIKU_SHUNT_MODEL          default: claude-haiku-4-5
   HAIKU_SHUNT_MIN_LINES      default: 350
   HAIKU_SHUNT_TIMEOUT_MS     default: 120000
@@ -68,10 +70,15 @@ function parseArgs(argv) {
 
 function logUsage(label, usage, model) {
   if (!usage) return;
-  const inTok = usage.input_tokens ?? usage.inputTokens ?? "?";
+  // claude -p reports the prompt split across cache buckets; add them up so
+  // the number means "tokens that went to Haiku" in both backends.
+  const inTok =
+    (usage.input_tokens ?? usage.inputTokens ?? 0) +
+    (usage.cache_creation_input_tokens ?? 0) +
+    (usage.cache_read_input_tokens ?? 0);
   const outTok = usage.output_tokens ?? usage.outputTokens ?? "?";
   console.error(
-    `[haiku-shunt] ${label} model=${model} input=${inTok} output=${outTok}`,
+    `[haiku-shunt] ${label} backend=${getConfig().backend} model=${model} input=${inTok} output=${outTok}`,
   );
 }
 
@@ -107,7 +114,7 @@ async function main() {
       for (const n of results.notes) console.log(`  • ${n}`);
     }
     console.log(
-      "\nThen: export ANTHROPIC_API_KEY=sk-... && haiku-shunt doctor",
+      "\nThen: haiku-shunt doctor (uses your Claude Code login; export ANTHROPIC_API_KEY only to force the API)",
     );
     console.log("Ensure ~/.local/bin is on your PATH.");
     return;

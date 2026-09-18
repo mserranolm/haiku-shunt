@@ -1,6 +1,6 @@
 {
   "name": "haiku-shunt",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Shunt I/O-heavy agent work to Claude Haiku — save frontier-model tokens in Claude Code and Cursor",
   "type": "module",
   "bin": {

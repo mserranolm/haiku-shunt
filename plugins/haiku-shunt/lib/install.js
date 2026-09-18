@@ -10,9 +10,11 @@ import {
   cpSync,
   chmodSync,
 } from "node:fs";
+import { spawnSync } from "node:child_process";
 import { homedir } from "node:os";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { resolveBackend } from "./anthropic.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 /** Plugin root: plugins/haiku-shunt */
@@ -258,11 +260,30 @@ export function runInstall({
 export function runDoctor() {
   const checks = [];
   const apiKey = process.env.ANTHROPIC_API_KEY;
-  checks.push({
-    name: "ANTHROPIC_API_KEY",
-    ok: Boolean(apiKey),
-    detail: apiKey ? "set" : "missing — export ANTHROPIC_API_KEY",
-  });
+  let backend;
+  try {
+    backend = resolveBackend(process.env.HAIKU_SHUNT_BACKEND, apiKey);
+  } catch (err) {
+    checks.push({ name: "backend", ok: false, detail: err.message });
+  }
+  if (backend === "api") {
+    checks.push({
+      name: "backend",
+      ok: true,
+      detail: "api (ANTHROPIC_API_KEY set)",
+    });
+  } else if (backend === "claude") {
+    const bin = process.env.HAIKU_SHUNT_CLAUDE_BIN || "claude";
+    const probe = spawnSync(bin, ["--version"], { encoding: "utf8" });
+    const found = probe.status === 0;
+    checks.push({
+      name: "backend",
+      ok: found,
+      detail: found
+        ? `claude -p (${probe.stdout.trim()}) — uses the Claude Code login`
+        : `claude -p: '${bin}' not found on PATH; install Claude Code, set HAIKU_SHUNT_CLAUDE_BIN, or export ANTHROPIC_API_KEY`,
+    });
+  }
 
   const bin = join(homedir(), ".local", "bin", "haiku-shunt");
   checks.push({
